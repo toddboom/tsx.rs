@@ -1,0 +1,11 @@
+[package]
+name = "tsz"
+version = "0.1.0"
+authors = ["Todd Persen <todd.persen@gmail.com>"]
+
+[dependencies]
+bit-vec = "*"
+num = "*"
+
+[dev-dependencies]
+rand = "*"
