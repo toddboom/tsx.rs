@@ -36,14 +36,21 @@ impl Series {
             self.vn = v.clone();
             self.td = t.clone();
 
-            self.push_bits(v, 64);
+            self.push_value(v, 14);
         }
     }
 
-    fn push_bits(&mut self, v: f64, n: u8) {
-        let b64 = unsafe { std::mem::transmute::<f64, u64>(v) };
-        for x in n-1..0 {
-            self.bv.push(b64 & (1 << x) > 0);
+    fn push_value(&mut self, v: f64, n: u8) {
+        let b64 = unsafe { std::mem::transmute::<f64,u64>(v) };
+        for x in 0..n {
+            self.bv.push(b64 & (2 << n) > 0);
+        }
+    }
+
+    fn push_timestamp(&mut self, v: f64, n: u8) {
+        let b64 = unsafe { std::mem::transmute::<f64,u64>(v) };
+        for x in 0..n {
+            self.bv.push(b64 & (2 << n) > 0);
         }
     }
 }
@@ -69,3 +76,4 @@ mod tests {
         assert_eq!(s.vn, 3.14);
     }
 }
+
