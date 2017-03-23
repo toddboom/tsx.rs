@@ -1,3 +1,5 @@
+#![feature(type_ascription)]
+
 extern crate bit_vec;
 
 //use std::collections::BTreeMap;
@@ -323,6 +325,42 @@ mod tests {
         assert_eq!(iter.next(), Some(3.1502));
         assert_eq!(iter.next(), Some(4.20));
         assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_series_massive() {
+        use std::str::FromStr;
+        const LENGTH: usize = 24*60;
+
+        struct SeriesTest<'a> {
+            series: Series,
+            inputs: [f64; LENGTH],
+            name: &'a str
+        }
+
+        impl<'a> SeriesTest<'a> {
+            pub fn new<F: FnOnce(&mut [f64])>(name: &'a str, values: F) -> SeriesTest<'a> {
+                let mut s = SeriesTest {
+                    name: name,
+                    series: Series::new(0),
+                    inputs: [0f64; LENGTH]
+                };
+
+                return s;
+            }
+        }
+
+        let mut examples = Vec::new();
+
+        let mut s = SeriesTest::new("constant zero", |inputs: &mut [f64]| {
+            for i in inputs { *i = 0f64; }
+        });
+        examples.push(s);
+
+        let mut s = SeriesTest::new("constant one", |inputs: &mut [f64]| {
+            for i in inputs { *i = 1f64; }
+        });
+        examples.push(s);
     }
 }
 
